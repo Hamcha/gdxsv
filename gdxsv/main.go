@@ -53,10 +53,10 @@ var (
 )
 
 type Config struct {
-	LobbyAddr        string `env:"GDXSV_LOBBY_ADDR" envDefault:"localhost:3333"`
+	LobbyAddr        string `env:"GDXSV_LOBBY_ADDR"`
 	LobbyPublicAddr  string `env:"GDXSV_LOBBY_PUBLIC_ADDR" envDefault:"127.0.0.1:3333"`
 	LobbyHttpAddr    string `env:"GDXSV_LOBBY_HTTP_ADDR" envDefault:":3380"`
-	BattleAddr       string `env:"GDXSV_BATTLE_ADDR" envDefault:"localhost:3334"`
+	BattleAddr       string `env:"GDXSV_BATTLE_ADDR"`
 	BattlePublicAddr string `env:"GDXSV_BATTLE_PUBLIC_ADDR" envDefault:"127.0.0.1:3334"`
 	BattleRegion     string `env:"GDXSV_BATTLE_REGION" envDefault:""`
 	BattleLogPath    string `env:"GDXSV_BATTLE_LOG_PATH" envDefault:"./battlelog"`
