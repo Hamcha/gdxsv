@@ -77,7 +77,7 @@ You can build the project using the provided `Dockerfile` and run it like this:
 
 ```shell
 # Initialize database in current directory
-docker run --rm -it -v $(pwd):/data -e GDXSV_DB_NAME=/data/gdxsv.db gdxsv /app/bin/gdxsv initdb
+docker run --rm -it -v $(pwd):/data -e GDXSV_DB_NAME=/data/gdxsv.db gdxsv initdb
 
 # Start lobby+match server (replace 127.0.0.1 with your external IP to allow external access)
 docker run --rm -it -v $(pwd):/data \
@@ -87,7 +87,7 @@ docker run --rm -it -v $(pwd):/data \
            -e GDXSV_BATTLE_PUBLIC_ADDR=127.0.0.1:9877 \
            -e GDXSV_BATTLE_ADDR=:9877 \
            -p 9876:9876 -p 9877:9877/udp -p 9877:9877/tcp \
-           gdxsv /app/bin/gdxsv lbs
+           gdxsv lbs
 ```
 
 ### LBS and MCS architecture

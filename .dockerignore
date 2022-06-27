@@ -1,0 +1,10 @@
+/.github/
+/battlelog/
+/chatops/
+/flycast/
+/pcsx2/
+/infra/
+/website/
+*.sh
+*.ps1
+*.db

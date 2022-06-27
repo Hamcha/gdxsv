@@ -1,14 +1,22 @@
-FROM golang:alpine
+# Multi-step dockerfile so we don't end up with GB-sized environments
+ARG GO_VERSION=1.18
 
-# Install dependencies
-RUN apk add protoc git build-base
+# Build step
+FROM golang:${GO_VERSION}-alpine AS build
+RUN apk add --no-cache protoc git build-base ca-certificates
 
-# Add code
-ADD . /app
+WORKDIR /src
+COPY ./go.mod ./go.sum ./
+RUN go mod download
 
-# Build
-RUN cd /app && make install-tools build
+COPY ./ ./
 
-VOLUME /data
+RUN CGO_ENABLED=1 GOOS=linux make install-tools build
 
-CMD /app/bin/gdxsv
+# Run step
+FROM alpine:edge AS final
+
+# copy compiled app
+COPY --from=build /src/bin/gdxsv /gdxsv
+
+ENTRYPOINT ["/gdxsv"]
