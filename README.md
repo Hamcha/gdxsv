@@ -86,6 +86,7 @@ docker run --rm -it -v $(pwd):/data \
            -e GDXSV_LOBBY_ADDR=:9876 \
            -e GDXSV_BATTLE_PUBLIC_ADDR=127.0.0.1:9877 \
            -e GDXSV_BATTLE_ADDR=:9877 \
+           -p 9876:9876 -p 9877:9877/udp -p 9877:9877/tcp \
            gdxsv /app/bin/gdxsv lbs
 ```
 
