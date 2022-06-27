@@ -186,6 +186,14 @@ func mainLbs() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	defer stop()
 
+	// If LobbyAddr/BattleAddr aren't specified, derive their values from LobbyPublicAddr/BattlePublicAddr
+	if conf.LobbyAddr == "" {
+		conf.LobbyAddr = stripHost(conf.LobbyPublicAddr)
+	}
+	if conf.BattleAddr == "" {
+		conf.BattleAddr = stripHost(conf.BattlePublicAddr)
+	}
+
 	lbs := NewLbs()
 	if *noban {
 		lbs.NoBan()
