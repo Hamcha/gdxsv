@@ -221,8 +221,8 @@ func (l *LbsLobby) printSameLobbyUsers(peer *LbsPeer) {
 		entryUserIDs[id] = true
 	}
 
-	if 12 < len(l.Users) {
-		peer.SendMessage(chatMsg("", "", "Many users in this lobby"))
+	if len(l.Users) > 12 {
+		peer.SendMessage(chatMsg("", "", "This lobby is full"))
 	} else {
 		for userID := range l.Users {
 			if userID == peer.UserID {
@@ -238,15 +238,15 @@ func (l *LbsLobby) printSameLobbyUsers(peer *LbsPeer) {
 
 			if p.Team == TeamRenpo {
 				if p.Room == nil {
-					peer.SendMessage(chatMsg(p.UserID, p.Name, ">連邦"))
+					peer.SendMessage(chatMsg(p.UserID, p.Name, ">Federation"))
 				} else {
-					peer.SendMessage(chatMsg(p.UserID, p.Name, ">連邦>パートナー募集"))
+					peer.SendMessage(chatMsg(p.UserID, p.Name, ">Federation (Looking for partner)"))
 				}
 			} else if p.Team == TeamZeon {
 				if p.Room == nil {
-					peer.SendMessage(chatMsg(p.UserID, p.Name, ">ジオン"))
+					peer.SendMessage(chatMsg(p.UserID, p.Name, ">Zion"))
 				} else {
-					peer.SendMessage(chatMsg(p.UserID, p.Name, ">ジオン>パートナー募集"))
+					peer.SendMessage(chatMsg(p.UserID, p.Name, ">Zion (Looking for partner)"))
 				}
 			}
 		}
@@ -262,9 +262,9 @@ func (l *LbsLobby) printSameLobbyUsers(peer *LbsPeer) {
 		}
 
 		if p.Team == TeamRenpo {
-			peer.SendMessage(chatMsg(p.UserID, p.Name, ">連邦>自動選抜"))
+			peer.SendMessage(chatMsg(p.UserID, p.Name, ">Federation (Auto/Matchmaking)"))
 		} else if p.Team == TeamZeon {
-			peer.SendMessage(chatMsg(p.UserID, p.Name, ">ジオン>自動選抜"))
+			peer.SendMessage(chatMsg(p.UserID, p.Name, ">Zion (Auto/Matchmaking)"))
 		}
 	}
 }
@@ -277,18 +277,18 @@ func (l *LbsLobby) printLobbyMatchEntryCount(peer *LbsPeer) {
 func (l *LbsLobby) SwitchTeam(p *LbsPeer) {
 	switch p.Team {
 	case TeamNone:
-		l.sendLobbyChat(p.UserID, p.Name, "<退")
+		l.sendLobbyChat(p.UserID, p.Name, "<Left")
 	case TeamRenpo:
 		l.printLobbySetting(p)
 		l.printLobbyReminder(p)
 		l.printSameLobbyUsers(p)
-		l.sendLobbyChat(p.UserID, p.Name, ">連邦")
+		l.sendLobbyChat(p.UserID, p.Name, ">Joined Federation")
 		l.printLobbyMatchEntryCount(p)
 	case TeamZeon:
 		l.printLobbySetting(p)
 		l.printLobbyReminder(p)
 		l.printSameLobbyUsers(p)
-		l.sendLobbyChat(p.UserID, p.Name, ">ジオン")
+		l.sendLobbyChat(p.UserID, p.Name, ">Joined Zion")
 		l.printLobbyMatchEntryCount(p)
 	}
 }
@@ -393,11 +393,11 @@ func (l *LbsLobby) Entry(p *LbsPeer) {
 	l.EntryUsers = append(l.EntryUsers, p.UserID)
 	a, b := l.GetLobbyMatchEntryUserCount()
 	if p.Team == TeamRenpo {
-		l.sendLobbyChat(p.UserID, p.Name, ">連邦>自動選抜")
-		l.NotifyLobbyEvent("", fmt.Sprintf("【自動選抜】連邦×%d  ジオン×%d", a, b))
+		l.sendLobbyChat(p.UserID, p.Name, ">Ready as Federation (AUTO)")
+		l.NotifyLobbyEvent("", fmt.Sprintf("【AUTO】Federation×%d  Zion×%d", a, b))
 	} else if p.Team == TeamZeon {
-		l.sendLobbyChat(p.UserID, p.Name, ">ジオン>自動選抜")
-		l.NotifyLobbyEvent("", fmt.Sprintf("【自動選抜】連邦×%d  ジオン×%d", a, b))
+		l.sendLobbyChat(p.UserID, p.Name, ">Ready as Zion (AUTO)")
+		l.NotifyLobbyEvent("", fmt.Sprintf("【AUTO】Federation×%d  Zion×%d", a, b))
 	}
 }
 
@@ -409,13 +409,13 @@ func (l *LbsLobby) EntryCancel(p *LbsPeer) {
 		}
 	}
 	if p.Team == TeamRenpo {
-		l.sendLobbyChat(p.UserID, p.Name, ">連邦")
+		l.sendLobbyChat(p.UserID, p.Name, ">Not Ready (Federation)")
 	} else if p.Team == TeamZeon {
-		l.sendLobbyChat(p.UserID, p.Name, ">ジオン")
+		l.sendLobbyChat(p.UserID, p.Name, ">Not Ready (Zion)")
 	}
 
 	a, b := l.GetLobbyMatchEntryUserCount()
-	l.NotifyLobbyEvent("", fmt.Sprintf("【自動選抜】連邦×%d  ジオン×%d", a, b))
+	l.NotifyLobbyEvent("", fmt.Sprintf("【AUTO】Federation×%d  Zion×%d", a, b))
 }
 
 func (l *LbsLobby) EntryPicked(p *LbsPeer) {
@@ -595,7 +595,7 @@ func (l *LbsLobby) pickLobbyBattleParticipants() []*LbsPeer {
 	}
 
 	a, b := l.GetLobbyMatchEntryUserCount()
-	l.NotifyLobbyEvent("", fmt.Sprintf("      【自動選抜】連邦×%d  ジオン×%d", a, b))
+	l.NotifyLobbyEvent("", fmt.Sprintf("      【AUTO】Federation×%d  Zion×%d", a, b))
 
 	return peers
 }

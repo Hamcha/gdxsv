@@ -63,10 +63,10 @@ func (r *LbsRoom) Enter(u *DBUser) {
 		r.Users = append(r.Users, u)
 
 		if r.Team == TeamRenpo {
-			r.lobby.sendLobbyChat(u.UserID, u.Name, ">連邦>パートナー募集")
+			r.lobby.sendLobbyChat(u.UserID, u.Name, ">Federation (Looking for partner)")
 		}
 		if r.Team == TeamZeon {
-			r.lobby.sendLobbyChat(u.UserID, u.Name, ">ジオン>パートナー募集")
+			r.lobby.sendLobbyChat(u.UserID, u.Name, ">Zion (Looking for partner)")
 		}
 	}
 
@@ -83,10 +83,10 @@ func (r *LbsRoom) Exit(userID string) {
 			r.Users, r.Users[len(r.Users)-1] = append(r.Users[:i], r.Users[i+1:]...), nil
 
 			if r.Team == TeamRenpo {
-				r.lobby.sendLobbyChat(u.UserID, u.Name, ">連邦")
+				r.lobby.sendLobbyChat(u.UserID, u.Name, ">Federation")
 			}
 			if r.Team == TeamZeon {
-				r.lobby.sendLobbyChat(u.UserID, u.Name, ">ジオン")
+				r.lobby.sendLobbyChat(u.UserID, u.Name, ">Zion")
 			}
 			break
 		}
@@ -106,10 +106,10 @@ func (r *LbsRoom) Exit(userID string) {
 func (r *LbsRoom) Remove() {
 	for _, u := range r.Users {
 		if r.Team == TeamRenpo {
-			r.lobby.sendLobbyChat(u.UserID, u.Name, ">連邦")
+			r.lobby.sendLobbyChat(u.UserID, u.Name, ">Federation")
 		}
 		if r.Team == TeamZeon {
-			r.lobby.sendLobbyChat(u.UserID, u.Name, ">ジオン")
+			r.lobby.sendLobbyChat(u.UserID, u.Name, ">Zion")
 		}
 	}
 	*r = *NewRoom(r.app, r.Platform, r.GameDisk, r.lobby, r.ID, r.Team)

@@ -194,7 +194,7 @@ var _ = register(lbsLogout, func(p *LbsPeer, m *LbsMessage) {
 func SendServerShutDown(p *LbsPeer) {
 	n := NewServerNotice(lbsShutDown)
 	w := n.Writer()
-	w.WriteString("<LF=6><BODY><CENTER>サーバがシャットダウンしました<END>")
+	w.WriteString("<LF=6><BODY><CENTER>Server is shutting down.<END>")
 	p.SendMessage(n)
 	p.logger.Info("sending shutdown")
 }
@@ -1239,7 +1239,7 @@ var _ = register(lbsRoomUserReject, func(p *LbsPeer, m *LbsMessage) {
 	}
 
 	q.SendMessage(NewServerNotice(lbsRoomRemove).Writer().
-		WriteString("<LF=6><BODY><CENTER>拒否されました。<END>").Msg())
+		WriteString("<LF=6><BODY><CENTER>Access refused<END>").Msg())
 })
 
 var _ = register(lbsRoomExit, func(p *LbsPeer, m *LbsMessage) {
@@ -1258,7 +1258,7 @@ var _ = register(lbsRoomExit, func(p *LbsPeer, m *LbsMessage) {
 				if q := p.app.FindPeer(u.UserID); q != nil {
 					q.Room = nil
 					q.SendMessage(NewServerNotice(lbsRoomRemove).Writer().
-						WriteString("<LF=6><BODY><CENTER>部屋が解散になりました。<END>").Msg())
+						WriteString("<LF=6><BODY><CENTER>The room was disbanded.<END>").Msg())
 				}
 			}
 		}
