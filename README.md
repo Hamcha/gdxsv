@@ -71,6 +71,23 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 1. Edit build_run.sh to fix server address. (set you PC's address. Don't edit the port number.)
 1. Run `./bin/gdxsv lbs`. This command serves one lobby and one matching server.
 
+### Build and run with Docker (alternative)
+
+You can build the project using the provided `Dockerfile` and run it like this:
+
+```shell
+# Initialize database in current directory
+docker run --rm -it -v $(pwd):/data -e GDXSV_DB_NAME=/data/gdxsv.db gdxsv /app/bin/gdxsv initdb
+
+# Start lobby+match server (replace 127.0.0.1 with your external IP to allow external access)
+docker run --rm -it -v $(pwd):/data \
+           -e GDXSV_DB_NAME=/data/gdxsv.db \
+           -e GDXSV_LOBBY_PUBLIC_ADDR=127.0.0.1:9876 \
+           -e GDXSV_LOBBY_ADDR=:9876 \
+           -e GDXSV_BATTLE_PUBLIC_ADDR=127.0.0.1:9877 \
+           -e GDXSV_BATTLE_ADDR=:9877 \
+           gdxsv /app/bin/gdxsv lbs
+```
 
 ### LBS and MCS architecture
 There are two ways to run the gdxsv binary.
