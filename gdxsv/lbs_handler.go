@@ -1379,7 +1379,7 @@ var _ = register(lbsPostChatMessage, func(p *LbsPeer, m *LbsMessage) {
 
 var _ = register(lbsTopRankingTag, func(p *LbsPeer, m *LbsMessage) {
 	topRankSuu := uint8(1)
-	topRankTag := "勝利数ランキング"
+	topRankTag := "Top ranking"
 	p.SendMessage(NewServerAnswer(m).Writer().
 		Write8(topRankSuu).
 		WriteString(topRankTag).Msg())
